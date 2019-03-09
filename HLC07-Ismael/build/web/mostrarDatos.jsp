@@ -41,49 +41,45 @@
 
         <hr/>
         
-        <%
-            //int id = Integer.parseInt(request.getParameter("usuario"));
+        <%           
+            int actual = 0;
+            List lista = new uso_bd().cogerTipoProductos(1);
             
-            ArrayList<TipoProductos> lista = new ArrayList();
-            lista.addAll(new uso_bd().cogerTipoProductos(1));
-            
-            String [] listaNombres = new String[lista.size()];
-            
-            for(int a = 0; a < lista.size(); a++){
-                listaNombres[a] = lista.get(a).getDescripcion();
-            }
-            
-            pageContext.setAttribute("lista", listaNombres);
+            pageContext.setAttribute("lista", lista.toArray());
+            pageContext.setAttribute("num", lista.size()-1);
+            pageContext.setAttribute("actual", actual);
         %>
-
+        
         <section class="container text-center p-5">
             <div id="accordion">    
                 <h1 class="text-center text-white">Tipos de productos</h1> 
 
-                <c:forEach items="${lista}" var="tipop">
+                <c:forEach var = "i" begin = "0" end = "${num}">
+                    
                     <div class="card">
-                        <div class="card-header" id="headingOne">
+                        <div class="card-header" id="heading${i}">
                             <h5 class="mb-0">
-                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                ${tipop}
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#${i}" aria-expanded="true" aria-controls="${i}">
+                                    Item ${i}
                                 </button>
                             </h5>
                         </div>
 
 
-                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                         <div id="${i}" class="collapse" aria-labelledby="${i}" data-parent="#accordion">
                             <div class="card-body bg-dark">
-                                <div class="container p-5 text-light">
-                                    <h2 class="text-center ">Productos</h2>            
-                                    <table class="table table-light table-striped table-hover text-center">
+                                <div class="container p-5">
+                                    <h2 class="text-center text-light">Productos</h2>            
+                                    <table class="table table-light table-striped table-hover text-center text-dark">
                                         <thead>
                                             <tr>
-                                                <th>Jugador</th>
-                                                <th>Ganadas</th>
-                                                <th >Perdidas</th>
+                                                <th>Nombre</th>
+                                                <th>Precio</th>
+                                                <th>Imagen</th>
                                             </tr>
                                         </thead>
                                         <tbody>    
+                                            <
                                             <tr>
                                                 <td>nombre1</td>
                                                 <td>precio1</td>

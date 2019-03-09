@@ -7,6 +7,7 @@ package Conexion;
 
 import Tablas.Empleados;
 import Tablas.TipoProductos;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import org.hibernate.Query;
@@ -48,15 +49,14 @@ public class uso_bd {
         return id; // devolvemos el ID
     }
     
-    public List<TipoProductos> cogerTipoProductos(int id){
-        List lista = null;
+    public LinkedList<TipoProductos> cogerTipoProductos(int id){
+        LinkedList<TipoProductos> lista = new LinkedList();
         
         org.hibernate.Transaction tx = sesion.beginTransaction();
         Query q = sesion.createSQLQuery("select * from Tipo_Productos where id_empleado = ?");
         q.setInteger(0, id);
         
-        lista = (List<TipoProductos>) q.list();
-            
+        lista.addAll(q.list());
         
         sesion.close();
         
