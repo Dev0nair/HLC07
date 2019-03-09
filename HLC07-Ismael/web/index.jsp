@@ -27,7 +27,7 @@
                 <div class="col-sm-12 text-center justify-content-center">
                     <div class="datos">
                         <h1>HLC07</h1>
-                        <p>Página web que hace uso de JSP, servlet e Hibernate, en una base de datos Derby</p>
+                        <p>Página web que hace uso de JSP, servlet e Hibernate, en una base de datos en Derby</p>
                     </div>
                 </div>
             </div>
