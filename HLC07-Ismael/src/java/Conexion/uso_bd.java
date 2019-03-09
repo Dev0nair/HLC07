@@ -6,6 +6,9 @@
 package Conexion;
 
 import Tablas.Empleados;
+import Tablas.TipoProductos;
+import java.util.LinkedList;
+import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -40,7 +43,24 @@ public class uso_bd {
             id = -1;   // si no existe, saltara la excepcion, lo cual pondremos su valor
         }
         
+        sesion.close();
+        
         return id; // devolvemos el ID
+    }
+    
+    public List<TipoProductos> cogerTipoProductos(int id){
+        List lista = null;
+        
+        org.hibernate.Transaction tx = sesion.beginTransaction();
+        Query q = sesion.createSQLQuery("select * from Tipo_Productos where id_empleado = ?");
+        q.setInteger(0, id);
+        
+        lista = (List<TipoProductos>) q.list();
+            
+        
+        sesion.close();
+        
+        return lista;
     }
     
 }
