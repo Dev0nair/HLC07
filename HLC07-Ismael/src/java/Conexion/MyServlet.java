@@ -7,7 +7,8 @@ package Conexion;
  */
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,20 +32,7 @@ public class MyServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet MyServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet MyServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+            throws ServletException, IOException {        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -73,7 +61,22 @@ public class MyServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String usuario = request.getParameter("nuevonombre");
+        String pass = request.getParameter("nuevapass");
+        
+        int id = buscarUsuario(usuario, pass);
+        
+        if (id > -1) { // si encontramos el usuario, es que tenemos su id
+            request.setAttribute("usuario", id);
+            ServletContext sc = getServletContext();
+            RequestDispatcher rd = sc.getRequestDispatcher("/mostrarDatos.jsp");
+            rd.forward(request,response);
+        } else {
+            request.setAttribute("respuesta", "no");
+            ServletContext sc = getServletContext();
+            RequestDispatcher rd = sc.getRequestDispatcher("/index.jsp");
+            rd.forward(request,response);
+        }
     }
 
     /**
@@ -83,7 +86,14 @@ public class MyServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Servlet que comprueba el usuario";
     }// </editor-fold>
+
+    private int buscarUsuario(String usuario, String pass) {
+        uso_bd bd = new uso_bd();
+        
+        return bd.existeEmple(usuario, pass);
+
+    }
 
 }

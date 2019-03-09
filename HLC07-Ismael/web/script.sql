@@ -32,6 +32,6 @@ insert into tipo_productos values(3, 1, 'Memoria RAM');
 
 insert into productos values(1, 1, 'AMD FX 8350', 130.40, '2012-12-29', 'pro1.png');
 insert into productos values(2, 1, 'INTEL I7-9900K', 539.90, '2018-10-1', 'pro2.png');
-insert into productos values(3, 2, 'RADEON RX 480 NITRO 4GB', 230.80, '2016-07-04', 'graf1.png');
+insert into productos values(3, 2, 'RADEON RX 480 NITRO', 230.80, '2016-07-04', 'graf1.png');
 insert into productos values(4, 3, 'G.Skill Ripjaws V', 99.60, null, 'ram1.png');
 insert into productos values(5, 3, 'Corsair Vengeance', 115.16, null, 'ram2.png');
