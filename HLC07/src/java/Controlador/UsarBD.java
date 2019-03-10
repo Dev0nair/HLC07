@@ -5,7 +5,12 @@
  */
 package Controlador;
 
+import Modelo.Empleados;
 import Modelo.NewHibernateUtil;
+import Modelo.Productos;
+import Modelo.TipoProductos;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -31,12 +36,12 @@ public class UsarBD {
         try{
             
             org.hibernate.Transaction tx = sesion.beginTransaction();
-            Query q = sesion.createSQLQuery("select id from empleados where nombre = ? and password = ?");
-            q.setString(0, user);
+            Query q = sesion.createQuery("from Empleados where Nombre = :user and Password = :pass");
+            q.setString("user", user);
+            q.setString("pass", pass);
             
-            q.setString(1, pass);
-            
-            id = (int) q.list().get(0);
+            Empleados emple = (Empleados) q.uniqueResult();
+            id = emple.getId();
             
         }catch(Exception e){
             id = -1;   // si no existe, saltara la excepcion, lo cual pondremos su valor
@@ -49,12 +54,35 @@ public class UsarBD {
         return id; // devolvemos el ID
     }
     
-    public List cogerTipoProductos(int id){
-
-        org.hibernate.Transaction tx = sesion.beginTransaction();
-        Query q = sesion.createSQLQuery("select * from Tipo_Productos where id_empleado = ?");
-        q.setInteger(0, id);
+    public LinkedList<TipoProductos> cogerTipoProductos(int id){
+        LinkedList<TipoProductos> lista = new LinkedList();
         
-        return q.list();
+        org.hibernate.Transaction tx = sesion.beginTransaction();
+        Query q = sesion.createQuery("from TipoProductos where ID_EMPLEADO = :idtipo");
+        q.setInteger("idtipo", id);
+                
+        Iterator<TipoProductos> it = ((List<TipoProductos>)q.list()).iterator();
+        
+        while(it.hasNext()){
+            lista.add(it.next());
+        }
+        
+        return lista;
+    }
+    
+    public LinkedList<Productos> cogerProductos(int idtipo){
+        LinkedList<Productos> lista = new LinkedList();
+        
+        org.hibernate.Transaction tx = sesion.beginTransaction();
+        Query q = sesion.createQuery("from Productos where id_Producto = :idtipo");
+        q.setInteger("idtipo", idtipo);
+                
+        Iterator<Productos> it = ((List<Productos>)q.list()).iterator();
+        
+        while(it.hasNext()){
+            lista.add(it.next());
+        }
+        
+        return lista;
     }
 }

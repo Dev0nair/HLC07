@@ -48,7 +48,10 @@ public class TipoProductos  implements java.io.Serializable {
         this.descripcion = descripcion;
     }
 
-
+    @Override
+    public String toString(){
+        return this.descripcion;
+    }
 
 
 }

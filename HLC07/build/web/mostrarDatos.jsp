@@ -4,6 +4,7 @@
     Author     : 3268i
 --%>
 
+<%@page import="Modelo.Productos"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.LinkedList"%>
@@ -41,31 +42,41 @@
 
         <hr/>
         
+        
+        
         <%           
-            int actual = 0;
-            String nombre = null;
-            List lista = new UsarBD().cogerTipoProductos(1);
+                        
+            LinkedList<TipoProductos> lista = new UsarBD().cogerTipoProductos(1);
+            pageContext.setAttribute("listaTipos", lista);
             
-            pageContext.setAttribute("num", lista.size()-1);
+
+            LinkedList<Productos> prods = new LinkedList();
+            
+            
+            int actual = 0;
             pageContext.setAttribute("actual", actual);
         %>
         
+        
+        
+        
         <section class="container text-center p-5">
-            <div id="accordion">    
+            <div id="accordion">
+                
                 <h1 class="text-center text-white">Tipos de productos</h1> 
 
-                <c:forEach var = "i" begin = "0" end = "${num}">                    
+                <c:forEach items="${listaTipos}" var="i">                  
                     <div class="card">
-                        <div class="card-header" id="heading${i}">
+                        <div class="card-header" id="heading${i.id}">
                             <h5 class="mb-0">
-                                <button class="btn btn-link" data-toggle="collapse" data-target="#${i}" aria-expanded="true" aria-controls="${i}">
-                                    <%= lista%>
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#${i.id}" aria-expanded="true" aria-controls="${i.id}">
+                                    ${i.descripcion}
                                 </button>
                             </h5>
                         </div>
 
 
-                         <div id="${i}" class="collapse" aria-labelledby="${i}" data-parent="#accordion">
+                         <div id="${i.id}" class="collapse" aria-labelledby="${i.id}" data-parent="#accordion">
                             <div class="card-body bg-dark">
                                 <div class="container p-5">
                                     <h2 class="text-center text-light">Productos</h2>            
@@ -78,11 +89,17 @@
                                             </tr>
                                         </thead>
                                         <tbody>     
-                                            <tr>
-                                                <td>nombre1</td>
-                                                <td>precio1</td>
-                                                <td>precio1</td>
-                                            </tr>    
+                                            <% prods = new UsarBD().cogerProductos(lista.get(actual).getId()); pageContext.setAttribute("listaProds", prods); %>
+                                            
+                                            <c:forEach items="${listaProds}" var="a">
+                                                <tr>
+                                                    <td>${a.nombre}</td>
+                                                    <td>${a.precio}</td>
+                                                    <td><img src="${a.imagen}" width="60" height="60"></td>
+                                                </tr>    
+                                            </c:forEach>
+                                                
+                                                <% actual++ ;%>
                                         </tbody>
                                     </table>
                                 </div>

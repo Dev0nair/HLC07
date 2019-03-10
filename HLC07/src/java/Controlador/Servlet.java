@@ -65,8 +65,9 @@ public class Servlet extends HttpServlet {
         
         int id = buscarUsuario(usuario, pass);
         
-        if (id != -1) { // si encontramos el usuario, es que tenemos su id
-            request.setAttribute("usuario", id+"");
+        if (id > -1) { // si encontramos el usuario, es que tenemos su id
+            String res = id+"";
+            request.setAttribute("respuesta", res);
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher("/mostrarDatos.jsp");
             rd.forward(request,response);

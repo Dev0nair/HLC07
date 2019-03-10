@@ -35,11 +35,6 @@
 
         <hr/>
         
-        <%
-            // tratamiento de la respuesta. En este caso lo unico que queremos es que si no es null, es que ha recibido un error del servidor
-            String respuesta = request.getParameter("respuesta");
-        %>
-
         <section class="px-2 pt-5">
                 
             <div class="container form text-white p-5">

@@ -21,7 +21,7 @@
             <column name="FECHA_SALIDA" length="10" />
         </property>
         <property name="imagen" type="string">
-            <column name="IMAGEN" length="10" />
+            <column name="IMAGEN" length="255" />
         </property>
     </class>
 </hibernate-mapping>
