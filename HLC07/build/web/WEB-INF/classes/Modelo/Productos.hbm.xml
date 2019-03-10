@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-mar-2019 12:51:57 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Modelo.Productos" table="PRODUCTOS" schema="ISMAEL" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="idProducto" type="java.lang.Integer">
+            <column name="ID_PRODUCTO" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="NOMBRE" length="20" />
+        </property>
+        <property name="precio" type="java.lang.Float">
+            <column name="PRECIO" precision="23" scale="0" />
+        </property>
+        <property name="fechaSalida" type="date">
+            <column name="FECHA_SALIDA" length="10" />
+        </property>
+        <property name="imagen" type="string">
+            <column name="IMAGEN" length="10" />
+        </property>
+    </class>
+</hibernate-mapping>
