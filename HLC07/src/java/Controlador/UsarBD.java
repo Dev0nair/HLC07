@@ -85,4 +85,32 @@ public class UsarBD {
         
         return lista;
     }
+
+    public int insertarNuevo(int idtipo, String nombre, float parseFloat, String url) {
+        int id = cogerUltimoID();
+        org.hibernate.Transaction tx = sesion.beginTransaction();
+        Query q = sesion.createQuery("insert into Productos values (:id, :idtipo, :nomb, :precio, :url)");
+        q.setInteger("id", id);
+        q.setInteger("idtipo", idtipo);
+        q.setString(":nomb", nombre);
+        q.setFloat("precio", parseFloat);
+        q.setString("url", url);
+        
+        int n = q.executeUpdate();
+        
+        sesion.getTransaction().commit();
+        
+        return n;
+    }
+    
+    private int cogerUltimoID(){
+        org.hibernate.Transaction tx = sesion.beginTransaction();
+        Query q = sesion.createQuery("select max(id)+1 from productos");
+        int n = (int) q.list().get(0);
+        
+        sesion.flush();
+        sesion.close();
+        
+        return n;
+    }
 }
