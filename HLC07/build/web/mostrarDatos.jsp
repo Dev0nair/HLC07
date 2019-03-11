@@ -14,7 +14,11 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
-
+<%
+    if(!new UsarBD().isOpen()){
+        response.sendRedirect("index.jsp");
+    }
+%>
 <html>
     <head>
         <!-- Referencia a bootstrap css -->
@@ -28,19 +32,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <script>
-            function insertarNuevo(id, nombre) {
+            function insertarNuevo(id) {
 
-                document.getElementsByName("nid").value = id;
+                document.getElementById("nuevoid").value = id;
                 
-                document.getElementsByName("nnombre").value = prompt("Inserta el nombre");
+                document.getElementById("nuevonombre").value = prompt("Inserta el nombre");
 
-                document.getElementsByName("nprecio").value = prompt("Inserta el precio");
+                document.getElementById("nuevoprecio").value = prompt("Inserta el precio");
 
-                document.getElementsByName("nrul").value = prompt("Inserta la imagen");
+                document.getElementById("nuevaurl").value = prompt("Inserta la url de la imagen");
                 
                 document.getElementById("formregistro").submit(); 
 
             }
+            
         </script>
     </head>
     <body class="bg-dark">
@@ -68,16 +73,22 @@
             LinkedList<Productos> prods = new LinkedList();
 
             int actual = 0;
-            pageContext.setAttribute("actual", actual);
+            
         %>
 
 
 
 
         <section class="container text-center p-5">
+            
             <div id="accordion">
 
-                <h1 class="text-center text-white">Tipos de productos</h1> 
+                <h1 class="text-center text-white">Tipos de productos  
+                    <form method="POST" action="Cerrar">
+                        <button type="submit" class="btn btn-danger">Cerrar Sesion</button>
+                    </form>                 
+                
+                </h1> 
 
                 <c:forEach items="${listaTipos}" var="i">                  
                     <div class="card">
@@ -118,12 +129,12 @@
                                         </tbody>
                                     </table>
                                     <form id="formregistro" action="ServletRegistro" method="POST">
-                                        <input type="hidden" name="nnombre" value="">
-                                        <input type="hidden" name="nnombre" value="">
-                                        <input type="hidden" name="nprecio" value="">
-                                        <input type="hidden" name="nurl" value="">
+                                        <input id="nuevoid" type="hidden" name="nid" value="id">
+                                        <input id="nuevonombre" type="hidden" name="nnombre" value="nombre">
+                                        <input id="nuevoprecio" type="hidden" name="nprecio" value="precio">
+                                        <input id="nuevaurl" type="hidden" name="nurl" value="url">
                                     </form>
-                                    <button onclick="insertarNuevo(<%= actual - 1%>)" class="btn btn-primary">Insertar nuevo</button>
+                                    <button onclick="insertarNuevo(${i.id})" class="btn btn-primary">Insertar nuevo</button>
                                 </div>
                             </div>
                         </div>

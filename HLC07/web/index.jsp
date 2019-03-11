@@ -7,7 +7,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-
+<%
+    String resp = (String)request.getAttribute("respuesta");
+    
+    pageContext.setAttribute("resp", resp);
+%>
 <html>
     <head>
         <!-- Referencia a bootstrap css -->
@@ -21,6 +25,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body class="bg-dark">
+        
 
         <header class="main-header text-white pt-5">
             <div class="row d-flex h-100">
@@ -52,7 +57,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary btn-lg btn-block">Entrar</button>
                     
-                    <c:if test="${respuesta != null}"> <!-- Si no es null, significa que le hemos dicho que no hay usuario -->
+                    <c:if test="${resp == 'no'}"> <!-- Si no es null, significa que le hemos dicho que no hay usuario -->
                         <p>No se ha encontrado el usuario o contraseña incorrecta.</p>
                         <style>
                             input{

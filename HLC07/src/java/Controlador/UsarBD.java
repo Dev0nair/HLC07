@@ -34,7 +34,6 @@ public class UsarBD {
     public int existeEmple(String user, String pass){
         int id = -1;
         try{
-            
             org.hibernate.Transaction tx = sesion.beginTransaction();
             Query q = sesion.createQuery("from Empleados where Nombre = :user and Password = :pass");
             q.setString("user", user);
@@ -43,13 +42,11 @@ public class UsarBD {
             Empleados emple = (Empleados) q.uniqueResult();
             id = emple.getId();
             
+            sesion.flush();
         }catch(Exception e){
             id = -1;   // si no existe, saltara la excepcion, lo cual pondremos su valor
-        } finally{
-            System.err.println("ID Cogido: " + id);
+            cerrarConexion();
         }
-        
-        sesion.close();
         
         return id; // devolvemos el ID
     }
@@ -86,31 +83,53 @@ public class UsarBD {
         return lista;
     }
 
-    public int insertarNuevo(int idtipo, String nombre, float parseFloat, String url) {
+    public int insertarNuevo(int idtipo, String nombre, float precio, String url) {
         int id = cogerUltimoID();
-        org.hibernate.Transaction tx = sesion.beginTransaction();
+        
         Query q = sesion.createQuery("insert into Productos values (:id, :idtipo, :nomb, :precio, :url)");
         q.setInteger("id", id);
         q.setInteger("idtipo", idtipo);
         q.setString(":nomb", nombre);
-        q.setFloat("precio", parseFloat);
+        q.setFloat("precio", precio);
         q.setString("url", url);
         
         int n = q.executeUpdate();
         
         sesion.getTransaction().commit();
         
+        System.err.println("Se ha introducido: " + id + " - " + idtipo + " " + nombre + " " + precio + " " + url);
         return n;
+    }
+    
+    public void insertarNuevo(Productos pro){
+        int id = cogerUltimoID();
+        pro.setId(id);
+        
+        sesion.save(pro);
+        sesion.getTransaction().commit();
+        sesion.flush();
+        
     }
     
     private int cogerUltimoID(){
         org.hibernate.Transaction tx = sesion.beginTransaction();
-        Query q = sesion.createQuery("select max(id)+1 from productos");
+        Query q = sesion.createSQLQuery("select max(id)+1 from productos");
         int n = (int) q.list().get(0);
         
         sesion.flush();
-        sesion.close();
         
         return n;
+    }
+    
+    public void cerrarConexion(){
+        sesion.clear();
+        sesion.disconnect();
+        if (sesion.isOpen()) {
+            sesion.close();
+        }
+    }
+    
+    public boolean isOpen(){
+        return sesion.isOpen();
     }
 }

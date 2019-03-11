@@ -10,14 +10,17 @@ import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author 3268i
  */
+@WebServlet(name = "Servlet", urlPatterns = {"/Servlet"})
 public class Servlet extends HttpServlet {
 
     /**
@@ -63,20 +66,8 @@ public class Servlet extends HttpServlet {
         String usuario = request.getParameter("nuevonombre");
         String pass = request.getParameter("nuevapass");
         
-        int id = buscarUsuario(usuario, pass);
-        
-        if (id > -1) { // si encontramos el usuario, es que tenemos su id
-            String res = id+"";
-            request.setAttribute("respuesta", res);
-            ServletContext sc = getServletContext();
-            RequestDispatcher rd = sc.getRequestDispatcher("/mostrarDatos.jsp");
-            rd.forward(request,response);
-        } else {
-            request.setAttribute("respuesta", "no");
-            ServletContext sc = getServletContext();
-            RequestDispatcher rd = sc.getRequestDispatcher("/index.jsp");
-            rd.forward(request,response);
-        }
+        buscarUsuario(usuario, pass, request, response);
+               
     }
 
     /**
@@ -89,10 +80,22 @@ public class Servlet extends HttpServlet {
         return "Servlet: Manejador del login";
     }// </editor-fold>
     
-    private int buscarUsuario(String usuario, String pass) {
+    private void buscarUsuario(String usuario, String pass, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UsarBD bd = new UsarBD();
         
-        return bd.existeEmple(usuario, pass);
+        int id = bd.existeEmple(usuario, pass);
+        
+        if (id > -1) { // si encontramos el usuario, es que tenemos su id
+            request.setAttribute("idususario", id);
+            ServletContext sc = getServletContext();
+            RequestDispatcher rd = sc.getRequestDispatcher("/mostrarDatos.jsp");
+            rd.forward(request,response);
+        } else {
+            request.setAttribute("respuesta", "no");
+            ServletContext sc = getServletContext();
+            RequestDispatcher rd = sc.getRequestDispatcher("/index.jsp");
+            rd.forward(request,response);
+        }        
 
     }
 

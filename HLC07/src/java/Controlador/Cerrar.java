@@ -5,7 +5,6 @@
  */
 package Controlador;
 
-import Modelo.Productos;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -21,8 +20,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author 3268i
  */
-@WebServlet(name = "ServletRegistro", urlPatterns = {"/ServletRegistro"})
-public class ServletRegistro extends HttpServlet {
+@WebServlet(name = "Cerrar", urlPatterns = {"/Cerrar"})
+public class Cerrar extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,6 +35,7 @@ public class ServletRegistro extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -65,25 +65,10 @@ public class ServletRegistro extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-
-        String sidtipo, snomb, spre, surl;
-
-        sidtipo = request.getParameter("nid");
-
-        snomb = request.getParameter("nnombre");
-
-        spre = request.getParameter("nprecio");
-
-        surl = request.getParameter("nurl");
-
-        Productos pro = crearProducto(sidtipo, snomb, spre, surl);
-
-        if (pro != null){
-            realizarRegistroProducto(pro);
-        }       
-
+        
+        new UsarBD().cerrarConexion();
+        
         recargarPagina(request, response);
-
     }
 
     /**
@@ -95,31 +80,10 @@ public class ServletRegistro extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    private Productos crearProducto(String sidtipo, String snomb, String spre, String surl) {
-        Productos aux = new Productos();
-
-        
-
-        try {
-            aux.setIdProducto(Integer.parseInt(sidtipo));
-            aux.setNombre(snomb);
-            aux.setPrecio(Float.parseFloat(spre));
-            aux.setImagen(surl);
-        } catch (Exception e) {
-            return null;
-        }
-        
-        return aux;
-    }
-
-    private void realizarRegistroProducto(Productos pro) {
-        new UsarBD().insertarNuevo(pro);
-    }
-
+    
     private void recargarPagina(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession sesion = request.getSession();
-        response.sendRedirect("mostrarDatos.jsp");
+        response.sendRedirect("index.jsp");
     }
 
 }
