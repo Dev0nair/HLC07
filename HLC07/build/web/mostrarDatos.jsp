@@ -28,7 +28,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
 
         <!-- Mi css -->
-        <link rel="stylesheet" type="text/css" href="index.css">
+        <link rel="stylesheet" type="text/css" href="design/index.css">
 
         <title>Ismael GR - HLC07</title>
         <meta charset="UTF-8">
@@ -58,20 +58,6 @@
     </head>
     <body class="bg-dark">
 
-        <header class="main-header text-white pt-5">
-            <div class="row d-flex h-100">
-                <div class="col-sm-12 text-center justify-content-center">
-                    <div class="datos">
-                        <h1>HLC07</h1>
-                        <p>Página web que hace uso de JSP, servlet e Hibernate, en una base de datos en Derby</p>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <hr/>
-
-
 
         <%
             LinkedList<TipoProductos> lista = new UsarBD().cogerTipoProductos(iduser);
@@ -87,15 +73,21 @@
 
 
         <section class="container text-center p-5">
-
-            <div id="accordion">
-
-                <h1 class="text-center text-white">Tipos de productos  
+            <h1 class="text-center text-white">Tipos de productos  
                     <form method="POST" action="Cerrar">
                         <button type="submit" class="btn btn-danger">Cerrar Sesion</button>
                     </form>                 
 
                 </h1> 
+        </section>
+
+        <section class="row">
+            <section class="col-3">
+                
+            </section>           
+
+            <section class="col-9">
+                <div id="accordion">
 
                 <c:forEach items="${listaTipos}" var="i">                  
                     <div class="card">
@@ -149,6 +141,7 @@
 
 
             </div>
+            </section> 
         </section>
 
         <!-- referencias a JS de bootstrap -->
