@@ -86,7 +86,7 @@ public class Servlet extends HttpServlet {
         int id = bd.existeEmple(usuario, pass);
         
         if (id > -1) { // si encontramos el usuario, es que tenemos su id
-            request.setAttribute("idususario", id);
+            request.setAttribute("idusuario", id);
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher("/mostrarDatos.jsp");
             rd.forward(request,response);

@@ -15,7 +15,10 @@
 
 <!DOCTYPE html>
 <%
-    if(!new UsarBD().isOpen()){
+    int iduser = 0;
+    try {
+        iduser = (Integer) request.getAttribute("idusuario");
+    } catch (Exception e) {
         response.sendRedirect("index.jsp");
     }
 %>
@@ -30,22 +33,27 @@
         <title>Ismael GR - HLC07</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+        <script src="https://kryogenix.org/code/browser/sorttable/sorttable.js"></script>
         <script>
             function insertarNuevo(id) {
 
                 document.getElementById("nuevoid").value = id;
-                
+
                 document.getElementById("nuevonombre").value = prompt("Inserta el nombre");
 
                 document.getElementById("nuevoprecio").value = prompt("Inserta el precio");
 
                 document.getElementById("nuevaurl").value = prompt("Inserta la url de la imagen");
-                
-                document.getElementById("formregistro").submit(); 
 
+                document.getElementById("formregistro").submit();
             }
             
+            function ordenar(n, tipo){
+                tipo -= 1;
+                alert("ordenar " + n + " de " + tipo);
+                
+                var filas = 
+            }
         </script>
     </head>
     <body class="bg-dark">
@@ -66,28 +74,27 @@
 
 
         <%
-
-            LinkedList<TipoProductos> lista = new UsarBD().cogerTipoProductos(1);
+            LinkedList<TipoProductos> lista = new UsarBD().cogerTipoProductos(iduser);
             pageContext.setAttribute("listaTipos", lista);
 
             LinkedList<Productos> prods = new LinkedList();
 
             int actual = 0;
-            
+
         %>
 
 
 
 
         <section class="container text-center p-5">
-            
+
             <div id="accordion">
 
                 <h1 class="text-center text-white">Tipos de productos  
                     <form method="POST" action="Cerrar">
                         <button type="submit" class="btn btn-danger">Cerrar Sesion</button>
                     </form>                 
-                
+
                 </h1> 
 
                 <c:forEach items="${listaTipos}" var="i">                  
@@ -105,7 +112,7 @@
                             <div class="card-body bg-dark">
                                 <div class="container p-5">
                                     <h2 class="text-center text-light">Productos</h2>            
-                                    <table class="table table-light table-striped table-hover text-center text-dark">
+                                    <table class="table table-light table-striped table-hover text-center text-dark sortable">
                                         <thead>
                                             <tr>
                                                 <th>Nombre</th>
@@ -116,9 +123,8 @@
                                         <tbody>     
                                             <% prods = new UsarBD().cogerProductos(lista.get(actual).getId());
                                                 pageContext.setAttribute("listaProds", prods); %>
-
                                             <c:forEach items="${listaProds}" var="a">
-                                                <tr>
+                                                <tr class="${i.id}">
                                                     <td>${a.nombre}</td>
                                                     <td>${a.precio}</td>
                                                     <td><img src="${a.imagen}" width="60" height="60"></td>
