@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css?family=Numans');
+*{
+    font-family: 'Numans', sans-serif;
+}
+
+hr{
+    border:2px solid; 
+    color: white;
+    width:80%;
+}
+
+body{
+    background-image: url('https://www.wallpaperup.com/uploads/wallpapers/2015/06/12/720607/26f809b4c2ea442e38d8dbd4ee6a5fbd.jpg');
+    background-size: cover;
+    width: 100% ;
+    height: 100%;
+    top:0;
+    left:0;
+    position:fixed;
+}
+
+ul li a {
+    font-size: 17px;
+    color: rgb(255, 255, 255);
+    font-weight: bold;  
+}
+
+ul li a:hover {
+    color: #443020;
+}
+
+input {
+    font-weight: bold;
+}	
