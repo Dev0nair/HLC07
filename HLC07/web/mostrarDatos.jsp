@@ -47,12 +47,13 @@
 
                 document.getElementById("formregistro").submit();
             }
-            
-            function ordenar(n, tipo){
+
+            function ordenar(n, tipo) {
                 tipo -= 1;
                 alert("ordenar " + n + " de " + tipo);
-                
-                var filas = 
+
+                var filas
+                =
             }
         </script>
     </head>
@@ -74,73 +75,76 @@
 
         <section class="container text-center p-5">
             <h1 class="text-center text-white">Tipos de productos  
-                    <form method="POST" action="Cerrar">
-                        <button type="submit" class="btn btn-danger">Cerrar Sesion</button>
-                    </form>                 
+                <form method="POST" action="Cerrar">
+                    <button type="submit" class="btn btn-danger">Cerrar Sesion</button>
+                </form>                 
 
-                </h1> 
+            </h1> 
         </section>
 
         <section class="row">
-            <section class="col-3">
-                
+            <section class="col-3 ml-5">
+                <c:forEach items="${listaTipos}" var="i">          
+                <div class="card">
+                    <div class="card-header" id="heading${i.id}">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#${i.id}" aria-expanded="true" aria-controls="${i.id}">
+                                ${i.descripcion}
+                            </button>
+                        </h5>
+                    </div>
+                </div>
+                    
+                </c:forEach>
             </section>           
 
-            <section class="col-9">
+            <section class="col-8">
                 <div id="accordion">
 
-                <c:forEach items="${listaTipos}" var="i">                  
-                    <div class="card">
-                        <div class="card-header" id="heading${i.id}">
-                            <h5 class="mb-0">
-                                <button class="btn btn-link" data-toggle="collapse" data-target="#${i.id}" aria-expanded="true" aria-controls="${i.id}">
-                                    ${i.descripcion}
-                                </button>
-                            </h5>
-                        </div>
+                    <c:forEach items="${listaTipos}" var="i">                  
+                        <div class="card">
 
+                            <div id="${i.id}" class="collapse" aria-labelledby="${i.id}" data-parent="#accordion">
+                                <div class="card-body bg-dark">
+                                    <div class="container p-5">
+                                        <h2 class="text-center text-light">Productos</h2>            
+                                        <table class="table table-light table-striped table-hover text-center text-dark sortable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre</th>
+                                                    <th>Precio</th>
+                                                    <th>Imagen</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>     
+                                                <% prods = new UsarBD().cogerProductos(lista.get(actual).getId());
+                                                    pageContext.setAttribute("listaProds", prods); %>
+                                                <c:forEach items="${listaProds}" var="a">
+                                                    <tr class="${i.id}">
+                                                        <td>${a.nombre}</td>
+                                                        <td>${a.precio}</td>
+                                                        <td><img src="${a.imagen}" width="60" height="60"></td>
+                                                    </tr>    
+                                                </c:forEach>
 
-                        <div id="${i.id}" class="collapse" aria-labelledby="${i.id}" data-parent="#accordion">
-                            <div class="card-body bg-dark">
-                                <div class="container p-5">
-                                    <h2 class="text-center text-light">Productos</h2>            
-                                    <table class="table table-light table-striped table-hover text-center text-dark sortable">
-                                        <thead>
-                                            <tr>
-                                                <th>Nombre</th>
-                                                <th>Precio</th>
-                                                <th>Imagen</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>     
-                                            <% prods = new UsarBD().cogerProductos(lista.get(actual).getId());
-                                                pageContext.setAttribute("listaProds", prods); %>
-                                            <c:forEach items="${listaProds}" var="a">
-                                                <tr class="${i.id}">
-                                                    <td>${a.nombre}</td>
-                                                    <td>${a.precio}</td>
-                                                    <td><img src="${a.imagen}" width="60" height="60"></td>
-                                                </tr>    
-                                            </c:forEach>
-
-                                            <% actual++;%>
-                                        </tbody>
-                                    </table>
-                                    <form id="formregistro" action="ServletRegistro" method="POST">
-                                        <input id="nuevoid" type="hidden" name="nid" value="id">
-                                        <input id="nuevonombre" type="hidden" name="nnombre" value="nombre">
-                                        <input id="nuevoprecio" type="hidden" name="nprecio" value="precio">
-                                        <input id="nuevaurl" type="hidden" name="nurl" value="url">
-                                    </form>
-                                    <button onclick="insertarNuevo(${i.id})" class="btn btn-primary">Insertar nuevo</button>
+                                                <% actual++;%>
+                                            </tbody>
+                                        </table>
+                                        <form id="formregistro" action="ServletRegistro" method="POST">
+                                            <input id="nuevoid" type="hidden" name="nid" value="id">
+                                            <input id="nuevonombre" type="hidden" name="nnombre" value="nombre">
+                                            <input id="nuevoprecio" type="hidden" name="nprecio" value="precio">
+                                            <input id="nuevaurl" type="hidden" name="nurl" value="url">
+                                        </form>
+                                        <button onclick="insertarNuevo(${i.id})" class="btn btn-primary">Insertar nuevo</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </c:forEach>
+                    </c:forEach>
 
 
-            </div>
+                </div>
             </section> 
         </section>
 
