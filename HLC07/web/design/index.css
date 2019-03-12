@@ -12,11 +12,12 @@ hr{
 body{
     background-image: url('https://www.wallpaperup.com/uploads/wallpapers/2015/06/12/720607/26f809b4c2ea442e38d8dbd4ee6a5fbd.jpg');
     background-size: cover;
-    width: 100% ;
+    background-repeat: no-repeat;
+    width: 100%;
     height: 100%;
-    top:0;
-    left:0;
-    position:fixed;
+    margin: 0;
+    padding: 0;
+    position: fixed;
 }
 
 ul li a {
@@ -35,4 +36,9 @@ input {
 
 #myInput{
     max-width: 500px;
+}
+
+#lista{
+	position: relative;
+	overflow: auto;
 }

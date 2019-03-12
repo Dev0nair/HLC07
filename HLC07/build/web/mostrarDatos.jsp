@@ -47,14 +47,6 @@
 
                 document.getElementById("formregistro").submit();
             }
-
-            function ordenar(n, tipo) {
-                tipo -= 1;
-                alert("ordenar " + n + " de " + tipo);
-
-                var filas
-                =
-            }
         </script>
     </head>
     <body class="bg-dark">
@@ -82,8 +74,9 @@
             </h1> 
         </section>
 
-        <section class="row">
-            <section class="col-3 ml-5">
+        <section id="lista" class="row">
+
+            <section class="col-md-3">
                 <c:forEach items="${listaTipos}" var="i">          
                 <div class="card">
                     <div class="card-header" id="heading${i.id}">
@@ -98,7 +91,7 @@
                 </c:forEach>
             </section>           
 
-            <section class="col-8">
+            <section class="col-md-9">
                 <div id="accordion">
 
                     <c:forEach items="${listaTipos}" var="i">                  
@@ -106,7 +99,7 @@
 
                             <div id="${i.id}" class="collapse" aria-labelledby="${i.id}" data-parent="#accordion">
                                 <div class="card-body bg-dark">
-                                    <div class="container p-5">
+                                    <div class="container py-5 elemento">
                                         <h2 class="text-center text-light">Productos</h2>            
                                         <table class="table table-light table-striped table-hover text-center text-dark sortable">
                                             <thead>
