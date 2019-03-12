@@ -66,8 +66,10 @@ public class ServletRegistro extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
 
-        String sidtipo, snomb, spre, surl;
+        String USUARIO, sidtipo, snomb, spre, surl;
 
+        int iduser = (Integer) request.getAttribute("usuario");
+        
         sidtipo = request.getParameter("nid");
 
         snomb = request.getParameter("nnombre");
@@ -78,11 +80,11 @@ public class ServletRegistro extends HttpServlet {
 
         Productos pro = crearProducto(sidtipo, snomb, spre, surl);
 
-        if (pro != null){
+        if (pro != null) {
             realizarRegistroProducto(pro);
-        }       
+        }
 
-        recargarPagina(request, response);
+        recargarPagina(request, response, iduser);
 
     }
 
@@ -99,8 +101,6 @@ public class ServletRegistro extends HttpServlet {
     private Productos crearProducto(String sidtipo, String snomb, String spre, String surl) {
         Productos aux = new Productos();
 
-        
-
         try {
             aux.setIdProducto(Integer.parseInt(sidtipo));
             aux.setNombre(snomb);
@@ -109,7 +109,7 @@ public class ServletRegistro extends HttpServlet {
         } catch (Exception e) {
             return null;
         }
-        
+
         return aux;
     }
 
@@ -117,9 +117,12 @@ public class ServletRegistro extends HttpServlet {
         new UsarBD().insertarNuevo(pro);
     }
 
-    private void recargarPagina(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession sesion = request.getSession();
-        response.sendRedirect("mostrarDatos.jsp");
+    private void recargarPagina(HttpServletRequest request, HttpServletResponse response, int user) throws ServletException, IOException {
+        
+        request.setAttribute("idusuario", user);
+        ServletContext sc = getServletContext();
+        RequestDispatcher rd = sc.getRequestDispatcher("/mostrarDatos.jsp");
+        rd.forward(request, response);
     }
 
 }

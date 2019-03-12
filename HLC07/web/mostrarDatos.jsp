@@ -18,6 +18,7 @@
     int iduser = 0;
     try {
         iduser = (Integer) request.getAttribute("idusuario");
+        pageContext.setAttribute("usuario", iduser);
     } catch (Exception e) {
         response.sendRedirect("index.jsp");
     }
@@ -27,6 +28,11 @@
         <!-- Referencia a bootstrap css -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
 
+        <!-- JQuery y bootstrap-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
         <!-- Mi css -->
         <link rel="stylesheet" type="text/css" href="design/index.css">
 
@@ -35,8 +41,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://kryogenix.org/code/browser/sorttable/sorttable.js"></script>
         <script>
+            $(document).ready(function () {
+                $("#myInput").on("keydown", function () {
+                    var value = $(this).val().toLowerCase();
+                    $("#myTable tr").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });
+            
             function insertarNuevo(id) {
-
                 document.getElementById("nuevoid").value = id;
 
                 document.getElementById("nuevonombre").value = prompt("Inserta el nombre");
@@ -62,10 +76,7 @@
 
         %>
 
-
-
-
-        <section class="container text-center p-5">
+        <section class="container text-center py-5">
             <h1 class="text-center text-white">Tipos de productos  
                 <form method="POST" action="Cerrar">
                     <button type="submit" class="btn btn-danger">Cerrar Sesion</button>
@@ -74,63 +85,63 @@
             </h1> 
         </section>
 
-        <section id="lista" class="row">
+        <section class="row pl-1">
 
-            <section class="col-md-3">
+            <section id="lista" class="col-md-3">
                 <c:forEach items="${listaTipos}" var="i">          
-                <div class="card">
-                    <div class="card-header" id="heading${i.id}">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link" data-toggle="collapse" data-target="#${i.id}" aria-expanded="true" aria-controls="${i.id}">
-                                ${i.descripcion}
-                            </button>
-                        </h5>
+                    <div class="card">
+                        <div class="card-header" id="heading${i.id}">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#${i.id}" aria-expanded="true" aria-controls="${i.id}">
+                                    ${i.descripcion}
+                                </button>
+                            </h5>
+                        </div>
                     </div>
-                </div>
-                    
+
                 </c:forEach>
             </section>           
 
             <section class="col-md-9">
+                <input class="form-control" id="myInput" type="text" placeholder="Buscar por palabra">
                 <div id="accordion">
 
                     <c:forEach items="${listaTipos}" var="i">                  
-                        <div class="card">
 
-                            <div id="${i.id}" class="collapse" aria-labelledby="${i.id}" data-parent="#accordion">
-                                <div class="card-body bg-dark">
-                                    <div class="container py-5 elemento">
-                                        <h2 class="text-center text-light">Productos</h2>            
-                                        <table class="table table-light table-striped table-hover text-center text-dark sortable">
-                                            <thead>
-                                                <tr>
-                                                    <th>Nombre</th>
-                                                    <th>Precio</th>
-                                                    <th>Imagen</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>     
-                                                <% prods = new UsarBD().cogerProductos(lista.get(actual).getId());
+                        <div id="${i.id}" class="collapse" aria-labelledby="${i.id}" data-parent="#accordion">
+                            <div class="card-body bg-dark">
+                                <div class="container py-5 elemento">
+                                    <h2 class="text-center text-light">Productos</h2>            
+                                    <table class="table table-light table-striped table-hover text-center text-dark sortable">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Precio</th>
+                                                <th>Imagen</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="myTable">     
+                                            <% prods = new UsarBD().cogerProductos(lista.get(actual).getId());
                                                     pageContext.setAttribute("listaProds", prods); %>
-                                                <c:forEach items="${listaProds}" var="a">
-                                                    <tr class="${i.id}">
-                                                        <td>${a.nombre}</td>
-                                                        <td>${a.precio}</td>
-                                                        <td><img src="${a.imagen}" width="60" height="60"></td>
-                                                    </tr>    
-                                                </c:forEach>
+                                            <c:forEach items="${listaProds}" var="a">
+                                                <tr class="${i.id}">
+                                                    <td>${a.nombre}</td>
+                                                    <td>${a.precio}</td>
+                                                    <td><img src="${a.imagen}" width="60" height="60"></td>
+                                                </tr>    
+                                            </c:forEach>
 
-                                                <% actual++;%>
-                                            </tbody>
-                                        </table>
-                                        <form id="formregistro" action="ServletRegistro" method="POST">
-                                            <input id="nuevoid" type="hidden" name="nid" value="id">
-                                            <input id="nuevonombre" type="hidden" name="nnombre" value="nombre">
-                                            <input id="nuevoprecio" type="hidden" name="nprecio" value="precio">
-                                            <input id="nuevaurl" type="hidden" name="nurl" value="url">
-                                        </form>
-                                        <button onclick="insertarNuevo(${i.id})" class="btn btn-primary">Insertar nuevo</button>
-                                    </div>
+                                            <% actual++;%>
+                                        </tbody>
+                                    </table>
+                                    <form id="formregistro" action="ServletRegistro" method="POST">
+                                        <input id="nuevouser" type="hidden" name="nuser" value="user">
+                                        <input id="nuevoid" type="hidden" name="nid" value="id">
+                                        <input id="nuevonombre" type="hidden" name="nnombre" value="nombre">
+                                        <input id="nuevoprecio" type="hidden" name="nprecio" value="precio">
+                                        <input id="nuevaurl" type="hidden" name="nurl" value="url">
+                                    </form>
+                                    <button onclick="insertarNuevo(${i.id})" class="btn btn-primary">Insertar nuevo</button>
                                 </div>
                             </div>
                         </div>
