@@ -12,7 +12,7 @@
             <column name="ID_PRODUCTO" />
         </property>
         <property name="nombre" type="string">
-            <column name="NOMBRE" length="20" />
+            <column name="NOMBRE" length="60" />
         </property>
         <property name="precio" type="java.lang.Float">
             <column name="PRECIO" precision="23" scale="0" />

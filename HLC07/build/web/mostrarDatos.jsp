@@ -94,6 +94,15 @@
 
             int actual = 0;
 
+            int metidoen = -1;
+            String nombredonde = null;
+            try {
+                metidoen = Integer.parseInt((String) request.getSession().getAttribute("dondeNuevo"));
+                nombredonde = lista.get(metidoen-1).getDescripcion();
+            } catch (Exception e) {
+                
+            }
+
         %>
 
 
@@ -107,13 +116,12 @@
             </h1> 
         </section>
 
-        <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 100px;">
+        <div aria-live="polite" aria-atomic="true">
 
             <div style="position: absolute; top: 0; right: 0;">
 
                 <div id="ok" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
                     <div class="toast-header">
-                        <img src="..." class="rounded mr-2" alt="...">
                         <strong class="mr-auto">Registro realizado.</strong>
                         <small class="text-muted">just now</small>
                         <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -121,7 +129,7 @@
                         </button>
                     </div>
                     <div class="toast-body">
-                        Se ha realizado la inserción correctamente.
+                        El producto ' ${nombreNuevo} ' se ha insertado correctamente en <%= nombredonde %>.
                     </div>
                 </div>
             </div>
@@ -138,7 +146,7 @@
                         </button>
                     </div>
                     <div class="toast-body">
-                        El registro no se ha podido realizar.
+                        El producto ' ${nombreNuevo} ' no se ha podido insertar en <%= nombredonde %>.
                     </div>
                 </div>
             </div>

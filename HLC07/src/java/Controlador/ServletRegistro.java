@@ -87,6 +87,9 @@ public class ServletRegistro extends HttpServlet {
             metido = 2;
         }
 
+        request.getSession().setAttribute("nombreNuevo", snomb);
+        request.getSession().setAttribute("dondeNuevo", sidtipo);
+
         recargarPagina(request, response, metido);
 
     }
