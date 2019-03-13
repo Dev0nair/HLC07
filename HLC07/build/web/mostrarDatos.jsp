@@ -189,7 +189,6 @@
                         <div id="${i.id}" class="collapse" aria-labelledby="${i.id}" data-parent="#accordion">
                             <div class="card-body bg-dark">
                                 <div class="container py-5 elemento">
-                                    <h2 class="text-center text-light">Productos</h2>            
                                     <table class="table table-light table-striped table-hover text-center text-dark sortable">
                                         <thead>
                                             <tr>
