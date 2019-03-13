@@ -8,7 +8,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <%
-    String resp = (String) request.getAttribute("respuesta");
+    String resp = (String) request.getSession().getAttribute("respuesta");
+    request.getSession().invalidate();
 
     pageContext.setAttribute("resp", resp);
 %>
@@ -35,7 +36,8 @@
                 <div class="col-sm-12 text-center justify-content-center">
                     <div class="datos">
                         <h1>Práctica HLC07</h1>
-                        <p>Página web que hace uso de JSP, servlet e Hibernate, en una base de datos en Derby</p>
+                        <h3>Página web que hace uso de JSP, servlet e Hibernate, en una base de datos en Derby</h3>
+                        <p>Por Ismael González. Finalizado día 10/02/2019.</p>
                     </div>
                 </div>
             </div>
@@ -47,7 +49,7 @@
             <div class="row justify-content-center align-items-center py-5">
                 <form action="Servlet" method="post">
                     <div class="text-center" style="color: #fff;">
-                        <h1>Log in!</h1>
+                        <h1>Log in</h1>
                     </div>
                     <div class="form-row justify-content-center">
                         <div class="col-7">

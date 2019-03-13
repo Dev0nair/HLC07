@@ -66,10 +66,8 @@ public class ServletRegistro extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
 
-        String USUARIO, sidtipo, snomb, spre, surl;
+        String sidtipo, snomb, spre, surl;
 
-        int iduser = (Integer) request.getAttribute("usuario");
-        
         sidtipo = request.getParameter("nid");
 
         snomb = request.getParameter("nnombre");
@@ -80,11 +78,16 @@ public class ServletRegistro extends HttpServlet {
 
         Productos pro = crearProducto(sidtipo, snomb, spre, surl);
 
+        int metido = 0;
+        
         if (pro != null) {
             realizarRegistroProducto(pro);
+            metido = 1;
+        } else {
+            metido = 2;
         }
 
-        recargarPagina(request, response, iduser);
+        recargarPagina(request, response, metido);
 
     }
 
@@ -117,12 +120,9 @@ public class ServletRegistro extends HttpServlet {
         new UsarBD().insertarNuevo(pro);
     }
 
-    private void recargarPagina(HttpServletRequest request, HttpServletResponse response, int user) throws ServletException, IOException {
-        
-        request.setAttribute("idusuario", user);
-        ServletContext sc = getServletContext();
-        RequestDispatcher rd = sc.getRequestDispatcher("/mostrarDatos.jsp");
-        rd.forward(request, response);
+    private void recargarPagina(HttpServletRequest request, HttpServletResponse response, int metido) throws ServletException, IOException {
+        request.getSession().setAttribute("metido", metido);
+        response.sendRedirect("mostrarDatos.jsp");
     }
 
 }

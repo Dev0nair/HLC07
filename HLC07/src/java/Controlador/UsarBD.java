@@ -114,7 +114,12 @@ public class UsarBD {
     private int cogerUltimoID(){
         org.hibernate.Transaction tx = sesion.beginTransaction();
         Query q = sesion.createSQLQuery("select max(id)+1 from productos");
-        int n = (int) q.list().get(0);
+        int n;
+        try{
+            n = (int) q.list().get(0);
+        }catch(Exception e){
+            n = 0;
+        }
         
         sesion.flush();
         

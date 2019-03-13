@@ -15,20 +15,28 @@
 
 <!DOCTYPE html>
 <%
+    // miramos si hemos entrado con la id de un usuario registrado
     int iduser = 0;
     try {
-        iduser = (Integer) request.getAttribute("idusuario");
-        pageContext.setAttribute("usuario", iduser);
+        iduser = (Integer) request.getSession().getAttribute("idusuario");
     } catch (Exception e) {
         response.sendRedirect("index.jsp");
+    }
+
+    // miramos si hemos recibido alguna información sobre alguna inserción de registro
+    int metido;
+    try {
+        metido = (Integer) request.getAttribute("metido");
+    } catch (Exception e) {
+        metido = 0;
     }
 %>
 <html>
     <head>
         <!-- Referencia a bootstrap css -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-        <!-- JQuery y bootstrap-->
+        <!-- Referencia a JQuery para el toast y animaciones varias -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -42,24 +50,36 @@
         <script src="https://kryogenix.org/code/browser/sorttable/sorttable.js"></script>
         <script>
             $(document).ready(function () {
-                $("#myInput").on("keydown", function () {
+                $("#myInput").on("keyup", function () {
                     var value = $(this).val().toLowerCase();
                     $("#myTable tr").filter(function () {
                         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                     });
                 });
             });
-            
+
             function insertarNuevo(id) {
                 document.getElementById("nuevoid").value = id;
 
-                document.getElementById("nuevonombre").value = prompt("Inserta el nombre");
+                var pnombre = prompt("Inserta el nombre");
 
-                document.getElementById("nuevoprecio").value = prompt("Inserta el precio");
+                if (pnombre != null) {
+                    document.getElementById("nuevonombre").value = pnombre;
 
-                document.getElementById("nuevaurl").value = prompt("Inserta la url de la imagen");
+                    var pprecio = prompt("Inserta el precio");
 
-                document.getElementById("formregistro").submit();
+                    if (pprecio != null) {
+                        document.getElementById("nuevoprecio").value = pprecio;
+
+                        var prul = prompt("Inserta la url de la imagen");
+
+                        if (prul != null) {
+                            document.getElementById("nuevaurl").value = prul;
+                            document.getElementById("formregistro").submit();
+                        }
+                    }
+                }
+
             }
         </script>
     </head>
@@ -76,6 +96,8 @@
 
         %>
 
+
+
         <section class="container text-center py-5">
             <h1 class="text-center text-white">Tipos de productos  
                 <form method="POST" action="Cerrar">
@@ -85,6 +107,45 @@
             </h1> 
         </section>
 
+        <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 100px;">
+
+            <div style="position: absolute; top: 0; right: 0;">
+
+                <div id="ok" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+                    <div class="toast-header">
+                        <img src="..." class="rounded mr-2" alt="...">
+                        <strong class="mr-auto">Registro realizado.</strong>
+                        <small class="text-muted">just now</small>
+                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="toast-body">
+                        Se ha realizado la inserción correctamente.
+                    </div>
+                </div>
+            </div>
+
+            <div style="position: absolute; top: 0; right: 0;">
+
+                <!-- Then put toasts within -->
+                <div id="fail" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+                    <div class="toast-header">
+                        <strong class="mr-auto">Registro no realizado.</strong>
+                        <small class="text-muted">Ahora</small>
+                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="toast-body">
+                        El registro no se ha podido realizar.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
         <section class="row pl-1">
 
             <section id="lista" class="col-md-3">
@@ -92,15 +153,24 @@
                     <div class="card">
                         <div class="card-header" id="heading${i.id}">
                             <h5 class="mb-0">
-                                <button class="btn btn-link" data-toggle="collapse" data-target="#${i.id}" aria-expanded="true" aria-controls="${i.id}">
+                                <button id="tableB${i.id}" class="btn btn-link" data-toggle="collapse" data-target="#${i.id}" aria-expanded="true" aria-controls="${i.id}">
                                     ${i.descripcion}
                                 </button>
                             </h5>
                         </div>
                     </div>
-
                 </c:forEach>
-            </section>           
+                <c:if test="${metido == 1}">
+                    <script>
+                        $('#ok').toast('show')
+                    </script>
+                </c:if>
+                <c:if test="${metido == 2}">
+                    <script>
+                        $('#fail').toast('show')
+                    </script>
+                </c:if>
+            </section>
 
             <section class="col-md-9">
                 <input class="form-control" id="myInput" type="text" placeholder="Buscar por palabra">
@@ -122,7 +192,7 @@
                                         </thead>
                                         <tbody id="myTable">     
                                             <% prods = new UsarBD().cogerProductos(lista.get(actual).getId());
-                                                    pageContext.setAttribute("listaProds", prods); %>
+                                                pageContext.setAttribute("listaProds", prods); %>
                                             <c:forEach items="${listaProds}" var="a">
                                                 <tr class="${i.id}">
                                                     <td>${a.nombre}</td>
@@ -135,11 +205,10 @@
                                         </tbody>
                                     </table>
                                     <form id="formregistro" action="ServletRegistro" method="POST">
-                                        <input id="nuevouser" type="hidden" name="nuser" value="user">
-                                        <input id="nuevoid" type="hidden" name="nid" value="id">
-                                        <input id="nuevonombre" type="hidden" name="nnombre" value="nombre">
-                                        <input id="nuevoprecio" type="hidden" name="nprecio" value="precio">
-                                        <input id="nuevaurl" type="hidden" name="nurl" value="url">
+                                        <input id="nuevoid" type="hidden" name="nid" value="">
+                                        <input id="nuevonombre" type="hidden" name="nnombre" value="">
+                                        <input id="nuevoprecio" type="hidden" name="nprecio" value="">
+                                        <input id="nuevaurl" type="hidden" name="nurl" value="">
                                     </form>
                                     <button onclick="insertarNuevo(${i.id})" class="btn btn-primary">Insertar nuevo</button>
                                 </div>

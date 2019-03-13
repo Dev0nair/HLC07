@@ -32,7 +32,3 @@ ul li a:hover {
 input {
     font-weight: bold;
 }	
-
-#lista{
-    position: sticky !important;
-}

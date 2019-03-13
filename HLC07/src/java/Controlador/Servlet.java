@@ -86,15 +86,11 @@ public class Servlet extends HttpServlet {
         int id = bd.existeEmple(usuario, pass);
         
         if (id > -1) { // si encontramos el usuario, es que tenemos su id
-            request.setAttribute("idusuario", id);
-            ServletContext sc = getServletContext();
-            RequestDispatcher rd = sc.getRequestDispatcher("/mostrarDatos.jsp");
-            rd.forward(request,response);
+            request.getSession().setAttribute("idusuario", id);
+            response.sendRedirect("mostrarDatos.jsp");
         } else {
-            request.setAttribute("respuesta", "no");
-            ServletContext sc = getServletContext();
-            RequestDispatcher rd = sc.getRequestDispatcher("/index.jsp");
-            rd.forward(request,response);
+            request.getSession().setAttribute("respuesta", "no");
+            response.sendRedirect("index.jsp");
         }        
 
     }

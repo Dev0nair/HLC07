@@ -82,11 +82,8 @@ public class Cerrar extends HttpServlet {
     }// </editor-fold>
     
     private void recargarPagina(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession sesion = request.getSession(); 
-        sesion.invalidate(); // cerramos la sesion
-        
+        request.getSession().invalidate(); // cerramos la sesion
         new UsarBD().cerrarConexion(); // cerramos la conexion a la BD
-        
         response.sendRedirect("index.jsp"); // volvemos al index
     }
 
