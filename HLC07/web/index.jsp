@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : index
     Created on : 09-mar-2019, 12:07:47
     Author     : 3268i
@@ -83,7 +83,7 @@
                         </div>
 
                     </c:if>
-                </form>   
+                </form>
             </div>
 
         </section>
